@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		
+		<!--  Este bloco de codigo esta comentado pois agora temos que apontar para o DataSource JNDI -->
+		
+		<!--  <property name="connection.driver_class">com.mysql.jdbc.Driver</property> -->
+		<!-- <property name="connection.url">jdbc:mysql://localhost:3306/financeiro</property>  URL de conexão é aponta para o banco de dados Financeiro -->
+		<!-- <property name="connection.username">root</property> -->
+		<!-- <property name="connection.password">root</property> -->
+		
+		<!-- Adicionando a conexao -->
+		<property name="connection.datasource">java:/comp/env/jdbc/FinanceiroDB</property>
+		
+		<property name="current_session_context_class">thread</property>
+	
+		<!-- current_session_context_class com o valor thred é necessario para o funcionamento de nosso filtro de conexão
+			indica que a sessao atual do hibernate(current session)deve ser diferente a cada thread,isso é possivel porque a cada
+			requisição que chega ao servidor é tratada é uma thread diferente -->
+		
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<!-- A propriedade hibernate.hbm2ddl.auto com o valor update que criara automatimente a estrutura de tabelas com 
+			 base nas classes de persistência mapeadas -->
+
+		<mapping class="br.com.javaparaweb.financeiro.usuario.Usuario" />
+		<mapping class="br.com.javaparaweb.financeiro.conta.Conta"/>
+		
+		<!-- Mesmo utilizando as Annotations para mapear as classes devemos comunicar o Hibernate atraves do mapping Class -->
+		
+	</session-factory>
+</hibernate-configuration>

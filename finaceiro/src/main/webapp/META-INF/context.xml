@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context reloadable="true">
+	<Resource name="jdbc/FinanceiroDB" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" username="root" password="root"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/financeiro?autoReconnect=true" />
+</Context>
+
+
+<!-- Este arquivo forcece o acesso ao banco de dados tanto para o Hibernate quanto ao Spring Security. -->
+<!-- Até entao essas informações o Hibernate pegava do hibernate.cfg.xml,como o Spring Security tmb vai precisar
+	criamos um DataSource JNDI.-->
+	
+	<!--  é necessario falar para o web.xml que agora temos um DataSource -->
