@@ -1,7 +1,15 @@
 package br.com.javaparaweb.financeiro.util;
 
+import br.com.javaparaweb.financeiro.bolsa.acao.AcaoDAO;
+import br.com.javaparaweb.financeiro.bolsa.acao.AcaoDAOHibernate;
+import br.com.javaparaweb.financeiro.categoria.CategoriaDAO;
+import br.com.javaparaweb.financeiro.categoria.CategoriaDAOHibernate;
+import br.com.javaparaweb.financeiro.cheque.ChequeDAO;
+import br.com.javaparaweb.financeiro.cheque.ChequeDAOHibernate;
 import br.com.javaparaweb.financeiro.conta.ContaDAO;
 import br.com.javaparaweb.financeiro.conta.ContaDAOHibernate;
+import br.com.javaparaweb.financeiro.lancamento.LancamentoDAO;
+import br.com.javaparaweb.financeiro.lancamento.LancamentoDAOHibernate;
 import br.com.javaparaweb.financeiro.usuario.UsuarioDAO;
 import br.com.javaparaweb.financeiro.usuario.UsuarioDAOHibernate;
 
@@ -22,7 +30,32 @@ public class DAOFactory {
 		contaDAO.setSession(HibernateUtil.getSessionFactory().getCurrentSession());
 		return contaDAO;
 	}
+	
+	public static CategoriaDAO criarCategoriaDAO() {
+		
+		CategoriaDAOHibernate categoriaDAO = new CategoriaDAOHibernate();
+		categoriaDAO.setSession(HibernateUtil.getSessionFactory().getCurrentSession());
+		return categoriaDAO;
+		
+	}
+	
+	public static LancamentoDAO criarLancamentoDAO() {
+		LancamentoDAOHibernate lancamentoDAO = new LancamentoDAOHibernate();
+		lancamentoDAO.setSession(HibernateUtil.getSessionFactory().getCurrentSession());
+		return lancamentoDAO;
+	}
+	
+	public static ChequeDAO criarChequeDAO() {
+		ChequeDAOHibernate chequeDAO = new ChequeDAOHibernate();
+		chequeDAO.setSession(HibernateUtil.getSessionFactory().getCurrentSession());
+		return chequeDAO;
+	}
+	
+	public static AcaoDAO criarAcaoDAO() {
+		AcaoDAOHibernate acaoDAO = new AcaoDAOHibernate();
+		acaoDAO.setSession(HibernateUtil.getSessionFactory().getCurrentSession());
+		return acaoDAO;
+	}
 }
 
-
-//Ctrl + Shift + o  = para reorganizar os importes de classe.
+//Ctrl + Shift + o  = para reorganizar os imports de classe.

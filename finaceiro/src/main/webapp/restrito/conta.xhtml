@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="/templates/interna.xhtml">
+	<ui:define name="titulo">
+		Cadastro de contas
+	</ui:define>
+	<ui:define name="corpo">
+		<h:form id="edicao">
+			<h:messages />
+			<h:inputHidden value="#{contaBean.selecionada.conta}" />
+			<h:inputHidden value="#{contaBean.selecionada.favorita}" />
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Descrição: " for="descricao" />
+				<h:inputText id="descricao"
+					value="#{contaBean.selecionada.descricao}" required="true"
+					maxlength="45" />
+
+				<h:outputLabel value="Saldo Inicial: " for="saldoInicial" />
+				<h:inputText id="saldoInicial"
+					value="#{contaBean.selecionada.saldoInicial}" size="10">
+					<f:convertNumber minFractionDigits="2" />
+				</h:inputText>
+
+				<h:commandButton value="Salvar" action="#{contaBean.salvar}">  <!-- * -->
+					<f:ajax execute="@form" render=":edicao :listagem" />
+				</h:commandButton>
+			</h:panelGrid>
+		</h:form>
+		<h:form id="listagem">
+			<h:dataTable value="#{contaBean.lista}" var="conta"
+				rendered="#{not empty contaBean.lista}"> <!-- * --> 
+				<h:column>
+					<f:facet name="header">Descrição</f:facet>
+					#{conta.descricao}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Cadastro</f:facet>
+					<h:outputText value="#{conta.dataCadastro}">
+						<f:convertDateTime dateStyle="medium" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">Saldo Inicial</f:facet>
+					<h:outputText value="#{conta.saldoInicial}"
+						style="text-align: right; display:block;">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<h:commandLink action="#{contaBean.tornarFavorita}">
+						<f:ajax execute="@this" render=":listagem" />
+						<h:graphicImage library="imagens"
+							name="favorita16_#{conta.favorita}.png" />
+						<f:setPropertyActionListener target="#{contaBean.selecionada}"
+							value="#{conta}" />
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<h:commandLink>
+						<f:ajax execute="@this" render=":edicao" />
+						<h:graphicImage library="imagens" name="editar16.png" />
+						<f:setPropertyActionListener target="#{contaBean.selecionada}"
+							value="#{conta}" />
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<h:commandLink action="#{contaBean.excluir}">
+						<f:ajax execute="@this" render=":listagem" />
+						<h:graphicImage library="imagens" name="excluir16.png" />
+						<f:setPropertyActionListener target="#{contaBean.selecionada}"
+							value="#{conta}" />
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
+
+
+
+<!-- f:setPropertyActionListener - serve para você fazer uma associação entre um objeto de sua página com um objeto de seu managed bean. -->
+
+<!-- a tabela deve ficar dentro do form para que os botoes funcionem -->
+
+ <!-- rendered="#{not empty contaBean.lista}"> só lista contas que houverem registros,isso é interresante por que se nao ele
+  iria criar cabeçalhos das colunas mesmo sem nada.  -->
+  
+  <!-- <f:ajax execute="@form" render=":edicao :listagem" /> -->
+  <!-- A tag commandButton tem dentro dela uma tag ajax,isso ja faz com q ela tenha um comportamento ajax.
+  
+  Atributo execute, especifica qual a porção da pagina será enviada ao servidor no momento da execução do ajax, ou seja, quais campos 
+  de formularios,nesse atributo pode ser especificados os IDs dos componentes que devem ser enviados,separado por espaço ou outros como
+  @form,@all,@none... o @this - pega apenas próprio componente para ser enviado e executado.
+  
+  
+  Ajax também trabalha com eventos JS, como keypress,mousedown,click,change,blur e etc.
+  
+  Atributo render do ajax, permite listar quais os componentes devem ser recarregados/redesenhados na pagina,neste caso esta sendo usado 
+  os IDs dos componentes form,edição e listagem.
+  
+  style="text-align: right; display:block;" - O valor vai ser alinhado a direta , display:block é obrigatório para que isso funcione.
+  
+  
+  
+  			<h:commandLink>
+					<f:ajax execute="@this" render=":edicao" />
+					<h:graphicImage library="imagens" name="editar16.png" />
+					<f:setPropertyActionListener target="#{contaBean.selecionada}"
+						value="#{conta}" />
+			</h:commandLink>
+				
+			Aqui o commandLink nao tem action,pois o seu objetivo é mostrar os dados da conta na linha em questão e no formulario de edição,
+			o simples fato de link ser acionado a tag f:setPropertyActionListener atribui a conta na linha em questão na classe bean e o 
+			formulario de edição ser atualizado já são o suficiente para cumprir nosso objetivos.
+   -->
+  

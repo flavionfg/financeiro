@@ -30,7 +30,7 @@ public class Conta implements Serializable {
 	private Usuario usuario; //é uma chave estrangeira,ela representa o usuario ao qual a conta bancaria se refere.
 	
 	/* Na classe conta usares a classe usuario como tipo da propriedade.
-	 * @ManyToOne e @JoinColumn garantiram que, quando um registro da teabela conta for carregad,o hibernate carrega os dados
+	 * @ManyToOne e @JoinColumn garantiram que, quando um registro da tabela conta for carregado hibernate carrega os dados
 	 * do usuario e questão e montara uma unstância de Usuario com esses dados.
 	 * 
 	 * nullable : se for true aceita nulo
@@ -44,7 +44,6 @@ public class Conta implements Serializable {
 	
 	/*updatable : se for false, estamos dizendo que esse campo não será considerado em uma operação de UPDATE, somento insert e select
 	 * usamos isso para garantir que a data de cadastro seja informada somente na criação do banco de dados.
-	 * 
 	 */
 
 	public Integer getConta() {

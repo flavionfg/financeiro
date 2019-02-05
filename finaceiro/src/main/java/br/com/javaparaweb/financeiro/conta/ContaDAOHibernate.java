@@ -24,6 +24,16 @@ public class ContaDAOHibernate implements ContaDAO {
 		
 		/*O método sabeOrUpdate do Hibernate insere ou atualiza a conta, se ja existir ele faz um update, se não faz um insert
 		 * é uma abordagem diferente da classe usuario.
+		 * 
+		 * para o saveOrUpdate funcionar corretamente, quando for acontecer o save a propriedade do código (propriedade que contém 
+		 * o @Id) deve estar com o valor NULO (ou zero primitivos)
+		 * 
+		 * no JSF se um campo numero for nulo ao ser exibido no formulario,continua sendo ao ser enviado, a nao ser que for um int,
+		 * o que garante isso é a propriedade javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL com o valor true no web.xml.
+		 * 
+		 * por fim, se o codigo da conta for um integer e nao int, e nesse caso por algum motivo estiver com o valor 0 (zero)
+		 * o Hibernate tentará fazer update e não insert.
+		 * 
 		 */
 	}
 

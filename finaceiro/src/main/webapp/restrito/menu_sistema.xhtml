@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+	<!-- Está pagina é basicamente uma copia da restrito/principal.xhtml, a diferença é que está adaptada para ser uma composition do 
+	facelets. Ou seja, ela não é uma pagina completa, mas um pedaço que pode ser reutilizado pelas outras páginas.Essa Pagina será 
+	utilizada como uma include. quando os botoes da caixa de seleçao de conta foram para o menu_sistema.xhtml, esse conteudo
+	pode ser removido da página restrito/principal.xhtml. -->
+	
+	
+<ui:composition>
+	<!-- 
+	Desde 02/06/2016 a biblioteca facelets-taglib-jsf20-spring-3
+	foi removida do repositorio do GoogleCode e ainda não foi 
+	recolocada no repositorio central do Maven
+	Enquanto isto não acontecer, estamos deixando de usar a tag
+	<sec:ifAnyGranted> para usar a tag
+	<h:panelGroup rendered="...isUserInRole...">
+	conforme abaixo  
+	-->
+	<h:panelGroup rendered="#{request.isUserInRole('ROLE_USUARIO')}"> <!-- 1 -->
+		<h:form>
+			<table width="100%">
+				<tr>
+					<td><h:commandButton value="Contas" action="/restrito/conta" />
+						<h:commandButton value="Categorias" action="/restrito/categoria" />
+						<h:commandButton value="Lançamentos" action="/restrito/lancamento" />
+						<h:commandButton value="Cheque" action="/restrito/cheque" /> 
+						<h:commandButton value="Ações" action="/restrito/acao" /> 
+						<h:selectOneMenu value="#{contextoBean.contaAtiva.conta}"
+							valueChangeListener="#{contextoBean.changeContaAtiva}"
+							rendered="#{not empty contextoBean and not empty contextoBean.contaAtiva}"
+							onchange="submit()">
+							<f:selectItems value="#{contaBean.lista}" var="conta"
+								itemValue="#{conta.conta}" itemLabel="#{conta.descricao}" />
+						</h:selectOneMenu></td>
+					<td align="left">
+					
+						<!-- 
+				Desde 02/06/2016 a biblioteca facelets-taglib-jsf20-spring-3
+				foi removida do repositorio do GoogleCode e ainda não foi 
+				recolocada no repositorio central do Maven
+				Enquanto isto não acontecer, estamos deixando de usar a tag
+				<sec:ifAnyGranted> para usar a tag
+				<h:panelGroup rendered="...isUserInRole...">
+				conforme abaixo  
+				
+				--> 	<h:panelGroup
+							rendered="#{request.isUserInRole('ROLE_ADMINISTRADOR')}">
+							<h:commandLink action="/admin/principal" title="Administrativo">
+								<h:graphicImage library="imagens" name="administrativo16.png" />
+							</h:commandLink>
+						</h:panelGroup> <h:commandLink action="/restrito/principal" title="Principal"> <!-- 2 -->
+							<h:graphicImage library="imagens" name="principal16.png" />
+						</h:commandLink> <a
+						onclick="document.location='#{request.contextPath}/j_spring_security_logout'"
+						title="Sair"> <h:graphicImage library="imagens"
+								name="logout16.png" />
+					</a>
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</h:panelGroup>
+</ui:composition>
+</html>
+
+<!-- 1: Como foi utilizada uma tag de segurança envolvendo todo o menu.Essa tag garante que somente os usuarios registrados do sistema
+(que tenham permissão ROLE_USUARIO) consigam visualizar as opções do menu -->
+
+<!-- 2: Como menu_sistema.xhtml será visualizado em todas as paginas internas do sistema,é interessante que seja possivel voltar para
+ a pagina principal do usuario. Isso será obtido como link Principal,foi utilizado a tag commandLink diferente do botão conta, que usou
+ commandButton,As tags command... são especificas para executar ações do JSF e obrigatóriamente devem ser localizadas dentro de um
+ formulário <h:form>. -->

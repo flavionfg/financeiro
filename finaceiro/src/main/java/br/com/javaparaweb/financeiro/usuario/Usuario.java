@@ -21,8 +21,10 @@ public class Usuario implements Serializable {
 	private Integer codigo;
 	private String nome;
 	private String email;
-	@org.hibernate.annotations.NaturalId //com esta Annotation, é criado um indice unico,evitando que sejam cadastrado Usuario com Logins Repetidos - Outra vantagem é que usando uma coluna enumerada para o código do usuario, ainda é possivel alterar o login do usuario durante a existencia no banco de dados, se o login fosse uma chave primaria isso não seria possivel.
-	private String login;
+	@org.hibernate.annotations.NaturalId //com esta Annotation, é criado um indice unico,evitando que sejam cadastrado Usuario com Logins Repetidos,
+	//Outra vantagem é que usando uma coluna enumerada para o código do usuario, ainda é possivel alterar o login do usuario durante a existencia no banco de dados,
+	//se o login fosse uma chave primaria isso não seria possivel.
+	private String login; // a chave natural é o login.
 	private String senha;
 	private Date nascimento;
 	private String celular;
@@ -42,7 +44,8 @@ public class Usuario implements Serializable {
 	 * @JoinColumn - informa a qual coluna da tabela filho será criada pelo Hibernate,este será o nome da coluna nova tabela.
 	 * @Column - dirá qual será o name da coluna de permissao na nova tabela usuario_permissao, lengh é tamanho da coluna, se nao colocar é criada com 256 caracteres.
 	 * Foi escolhido java.util.set para guardar as informações pois ele não admite itens repetidos internamente.
-	 * Se o usuario for excluido a permissao tmb será, como esta usando os annotations só o Hibernate faz isso, se for excluido direto pelo workbench as permissoes continuam la.
+	 * Se o usuario for excluido a permissao tmb será, como esta usando os annotations só o Hibernate faz isso, se for excluido direto pelo workbench as permissoes 
+	 * continuam la.
 	 */
 	
 

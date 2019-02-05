@@ -9,7 +9,7 @@ public class UsuarioDAOHibernate implements UsuarioDAO {
 	private Session session;
 
 	public void setSession(Session session) { // O Metodo setSession que vai injetar a Session na classe UsuarioDAOHibernate - pacote correto é org.hibernate.Session;
-		this.session = session;
+		this.session = session; // aqui usando o this, estamos referenciando a session do atributo, private Session session, logo a baixo do public class UsuarioDAOHibernate.
 	}
 
 	public void salvar(Usuario usuario) {
@@ -21,14 +21,14 @@ public class UsuarioDAOHibernate implements UsuarioDAO {
 			Usuario usuarioPermissao = this.carregar(usuario.getCodigo());
 			usuario.setPermissao(usuarioPermissao.getPermissao());
 			this.session.evict(usuarioPermissao);
+		}
+			this.session.update(usuario);
 			
-			/* Primeiro temos que eestar se o usuario tem alguma permissao,se for vazio temos que carrega-lo.
+			/* Primeiro temos que testar se o usuario tem alguma permissao,se for vazio temos que carrega-lo.
 			 * Carrega o usuario pelo codigo e joga esse objeto em uma referencia à parte a usuarioPermissao.
 			 * Trasnferimos a permissao original para o objeto usuario a ser salvo.
 			 * session.evict - este método retira do contexto de persistente o objeto usuarioPermissao, que só foi utilizado para copiar permissões.
 			 */
-		}
-			this.session.update(usuario);
 	}
 
 	public void excluir(Usuario usuario) {

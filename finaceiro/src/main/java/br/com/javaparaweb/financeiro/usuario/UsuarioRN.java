@@ -2,6 +2,7 @@ package br.com.javaparaweb.financeiro.usuario;
 
 import java.util.List;
 
+import br.com.javaparaweb.financeiro.categoria.CategoriaRN;
 import br.com.javaparaweb.financeiro.util.DAOFactory;
 
 /* RN são classes de regra de negocio!
@@ -31,12 +32,18 @@ public class UsuarioRN {
 		if (codigo == null || codigo == 0) {
 			usuario.getPermissao().add("ROLE_USUARIO"); // Quando for um usuario novo ele tera permissao de usuario adicionado ao Set de permissôes.
 			this.usuarioDAO.salvar(usuario);
+			//alteração para quando o usuario for novo
+			CategoriaRN categoriaRN = new CategoriaRN();
+			categoriaRN.salvaEstruturaPadrao(usuario);
 		} else {
 			this.usuarioDAO.atualizar(usuario);
 		}
 	}
 
 	public void excluir(Usuario usuario) {
+		//este método também precisa excluir as categorias desse usuario.
+		CategoriaRN categoriaRN = new CategoriaRN();
+		categoriaRN.excluir(usuario);
 		this.usuarioDAO.excluir(usuario);
 	}
 

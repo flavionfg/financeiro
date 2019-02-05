@@ -29,6 +29,10 @@
 
 		<mapping class="br.com.javaparaweb.financeiro.usuario.Usuario" />
 		<mapping class="br.com.javaparaweb.financeiro.conta.Conta"/>
+		<mapping class="br.com.javaparaweb.financeiro.categoria.Categoria"/>
+		<mapping class="br.com.javaparaweb.financeiro.lancamento.Lancamento"/>
+		<mapping class="br.com.javaparaweb.financeiro.cheque.Cheque"/>
+		<mapping class="br.com.javaparaweb.financeiro.bolsa.acao.Acao"/>
 		
 		<!-- Mesmo utilizando as Annotations para mapear as classes devemos comunicar o Hibernate atraves do mapping Class -->
 		

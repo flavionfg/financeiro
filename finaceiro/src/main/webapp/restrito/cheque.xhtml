@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="/templates/interna.xhtml">
+	<ui:define name="titulo">
+		#{msg.cheque_titulo}
+	</ui:define>
+	<ui:define name="corpo">
+
+		<h:form id="idiomas"> <!-- 1* -->
+			<ui:repeat value="#{contextoBean.idiomas}" var="idioma">
+				<h:commandLink action="#{contextoBean.setIdiomaUsuario(idioma)}">
+					<h:graphicImage library="imagens" name="bandeira_#{idioma}.png"
+						title="#{msg['idioma_'.concat(idioma)]}" />
+				</h:commandLink>
+			</ui:repeat>
+		</h:form>
+
+		<h:messages id="mensagem" />
+
+		<h:form id="edicao"> <!-- 2* -->
+			<h:panelGrid columns="2">
+				<h:outputLabel value="#{msg.cheque_numero_inicial}"
+					for="chequeInicial" />
+				<h:inputText id="chequeInicial" value="#{chequeBean.chequeInicial}"
+					maxlength="6" size="6" />
+				<h:outputLabel value="#{msg.cheque_numero_final}" for="chequeFinal" />
+				<h:inputText id="chequeFinal" value="#{chequeBean.chequeFinal}"
+					maxlength="6" size="6" />
+				<h:commandButton value="#{msg.cheque_botao_salvar}"
+					action="#{chequeBean.salvar}">
+					<f:ajax execute="@form" render=":listagem :edicao" />
+				</h:commandButton>
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="listagem"> <!-- 3* -->
+			<h:dataTable value="#{chequeBean.lista}" var="cheque"
+				rendered="#{!empty chequeBean.lista}">
+				<h:column>
+					<f:facet name="header">#{msg.cheque_coluna_cheque}</f:facet>
+					<h:outputText value="#{cheque.chequeId.cheque}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">#{msg.cheque_coluna_data}</f:facet>
+					<h:outputText value="#{cheque.dataCadastro}">
+						<f:convertDateTime dateStyle="medium" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">#{msg.cheque_coluna_lancamento}</f:facet>
+					<h:outputText value="#{cheque.lancamento.descricao}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">#{msg.cheque_coluna_valor}</f:facet>
+					<h:outputText value="#{cheque.lancamento.valor}">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">#{msg.cheque_coluna_data_baixa}</f:facet>
+					<h:outputText value="#{cheque.lancamento.data}">
+						<f:convertDateTime dateStyle="medium" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">#{msg.cheque_coluna_situacao}</f:facet>
+					<h:outputText
+						value="#{msg['cheque_coluna_situacao_'.concat(cheque.situacao)]}" />
+				</h:column>
+				<h:column>
+					<h:commandLink action="#{chequeBean.cancelar}">
+						<f:ajax execute="@form" render=":listagem :mensagem" />
+						<h:graphicImage library="imagens" name="cancelar16.png"
+							title="#{msg.cheque_coluna_cancelar}" />
+						<f:setPropertyActionListener target="#{chequeBean.selecionado}"
+							value="#{cheque}" />
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<h:commandLink action="#{chequeBean.excluir}">
+						<f:ajax execute="@form" render=":listagem :mensagem" />
+						<h:graphicImage library="imagens" name="excluir16.png"
+							title="#{msg.cheque_coluna_excluir}" />
+						<f:setPropertyActionListener target="#{chequeBean.selecionado}"
+							value="#{cheque}" />
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
+
+
+<!-- 1 - Painel de idiomas, o commandLunk atribui o idioma selecionado pelo usuario à pagina no clique sobre a bandeira
+de um idioma. o atributo action  dele chama o setIdiomaUsuario da ContextoBean, passando por parâmetro o valor do idioma
+variavel gerada a cada loop do <ui:repeat>
+
+
+	<h:graphicImage library="imagens" name="bandeira_#{idioma}.png"
+		title="#{msg['idioma_'.concat(idioma)]}" />
+		
+Estamos usando nesta situação a concatenação de strings via JSF EL,Usamos nossa variavel de sistema msg com o método
+.concat(). para termos uma mensagem composta,resultando na chave de internacionalização do idioma em questão.
+
+
+2 - dentro deste painel se encontra todos os elementos necessarios para a edição dos dados em tela.
+
+3 - O dataTable exibira as informações dos cheques cadastrados e também sobre lançamentos,caso um cheque esteja vinculado
+a algum. Observe que os nomes das colunas já estão mapeadas para intercionalização, como a seguinte instrução
+
+
+	<f:facet name="header">#{msg.cheque_coluna_cheque}</f:facet>
+	
+ou seja,serve para definir o cabeçalho de uma coluna da tabela HTML. A expressão #{msg.cheque_coluna_cheque} representará o texto
+"Cheque", mas no idioma de preferência do usuario,assim que configurarmos o aplicativo para trabalhar com internacionalização.
+
+
+
+ -->
+
+
+
+
+
+

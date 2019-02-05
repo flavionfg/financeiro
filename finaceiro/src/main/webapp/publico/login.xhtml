@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-	<title>Login</title>
-</h:head>
-<h:body>
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"> <!-- 1 -->
+<ui:composition template="/templates/externa.xhtml"> <!-- Pagina com o template do Facelets. -->
+	<ui:define name="corpo">
 	<h:panelGroup rendered="#{!empty param.login_error}">
 		<span style="color: red"> Erro ao efetuar o login.</span>
 		<br />
@@ -18,29 +17,34 @@
 	<!--Aqui foi utilizado o form do HTMLe não do JSF,pois não são obrigatorias para o Spring Security -->
 	<form id="login" method="post" 
 		action="#{request.contextPath}/j_spring_security_check"> <!-- esse é o destino padrao para realizar login usando Spring Security -->
-		<table>
-			<tr>
-				<td>Login</td>
-				<td><input type='text' name='j_username' /></td>
-			</tr>
-			<tr>
-				<td>Senha</td>
-				<td><input type='password' name='j_password' /></td>
-			</tr>
-			<tr>
-				<td align="right"><input type="checkbox"
-					name="_spring_security_remember_me" /></td> <!-- remember_me permite habilitar o login automatico -->
-				<td>Logar automaticamente</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Logar" /></td>
-			</tr>
-		</table>
-		<script>
-		document.getElementById("login").j_username.value = "#{SPRING_SECURITY_LAST_USERNAME}"; //O login da ultima tentativa esta disponivel
-		//aqui,que utilizamos para sempre preencher o campo login.
-	</script>
-	</form>
-</h:body>
+					<table>
+						<tr>
+							<td>Login</td>
+							<td><input type='text' name='j_username' /></td>
+						</tr>
+						<tr>
+							<td>Senha</td>
+							<td><input type='password' name='j_password' /></td>
+						</tr>
+						<tr>
+							<td align="right"><input type="checkbox"
+								name="_spring_security_remember_me" /></td> <!-- remember_me permite habilitar o login automatico -->
+							<td>Logar automaticamente</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Logar" /></td>
+						</tr>
+					</table>
+					<script>
+					document.getElementById("login").j_username.value = "#{SPRING_SECURITY_LAST_USERNAME}"; //O login da ultima tentativa esta disponivel
+					//aqui,que utilizamos para sempre preencher o campo login.
+				</script>
+			</form>
+		</ui:define>
+	</ui:composition>
 </html>
+
+
+<!-- 1: foi adicionada a diretiva da biblioteca html,mesmo convertendo a pagina para utilizar o template facelets ainda é necessario a inclusão de todas as diretrizes
+da biblioteca que ja eram utilizadas. A diferença é que,ao utilizar o template, a diretiva ui="http://xmlns.jcp.org/jsf/facelets" também passa a ser necessária -->

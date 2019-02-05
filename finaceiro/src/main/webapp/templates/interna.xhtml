@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> <!-- 1 -->
+	
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><ui:insert name="titulo">Financeiro</ui:insert></title> <!-- 2 -->
+	<h:outputStylesheet library="css" name="estilo.css" /> <!-- 3 -->
+	<style type="text/css">
+<!--
+
+#logotipo { 
+	text-align: right;
+	float: right;
+}
+
+-->
+</style>
+</h:head>
+<h:body>
+	<div id="container">
+		<div id="titulo">
+			<ui:insert name="titulo">Financeiro</ui:insert> <!-- 4 -->
+		</div>
+		<div id="logotipo">
+			<h:graphicImage library="imagens" name="logotipo_m.png" />
+		</div>
+		<div id="barra_menu">
+			<ui:insert name="barra_menu">
+				<ui:include src="/restrito/menu_sistema.xhtml" /> <!-- 5 -->
+			</ui:insert>
+		</div>
+		<div id="corpo">
+			<ui:insert name="corpo" />
+		</div>
+		<div id="rodape">
+			<ui:insert name="rodape">
+				<ui:include src="/publico/rodape.xhtml" />
+			</ui:insert>
+		</div>
+	</div>
+</h:body>
+</html>
+
+<!-- Facelets é um framework de templates,padroniza e centraliza codigo-fonte  -->
+
+<!-- 1: Declaração da TagLib do Facelets -->
+<!-- 2: A tag <ui:insert> será a principal tag utilizada na montagemda página de template,é ela que define os "espaços vazios" comentados. -->
+<!-- 3: importando o arquivo CSS <h:outputStlylesheet> é o corresponde ai <style> do HTML. tipo importação--> 
+<!-- 4: esta em volto do <div id="titulo" /> , que define um CSS para mudar o visualmente a apresentação do titulo da pagina,a tag ui:insert
+aceita qualquer conteudo HTML ou JSF. -->
+<!-- 5: <ui: include> inclui um fragmento de página no template; O objetivo do include é separar um determinado conteudo em um arquivo
+ á parte, para que ele possa ser inserido em mais lugares. -->
+
+
+<!--
+
+#logotipo { 
+	text-align: right;
+	float: right;
+}
+
+foi usado a técnica de incorporação do css da regra #logotipo por ser a unica que tem uma definição diferente dependendo da página que a 
+utiliza. isso varia entre o template externa.xhtml e interna.xhtml. para o template internar.xhtml, o logotipo é de tamanho médio e alinhado 
+à direita; para o template externa.xhtml, o logotipo é grande e centralizado.
+
+-->
+  

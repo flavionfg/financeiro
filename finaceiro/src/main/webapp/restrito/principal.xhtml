@@ -1,32 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-	<title>Principal</title>
-</h:head>
-<h:body>
-	<h1>Gerenciador Financeiro Pessoal</h1>
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:util="http://xmlns.jcp.org/jsf/composite/components/util" 
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"> <!-- 1* -->
+<ui:composition template="/templates/externa.xhtml"> 
+	<ui:define name="corpo">
+		Usuário logado #{request.remoteUser} 
+		<h:form>
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:panelGroup>
+					<fieldset>
+						<legend>Lançamentos até hoje</legend> <!-- 2* -->
+						<util:extrato height="100" lista="#{principalBean.listaAteHoje}"
+							larguraDescricao="130" botaoExclusao="false" botaoEdicao="false"
+							colunaSaldo="false" />
+					</fieldset>
+				</h:panelGroup>
+				<h:panelGroup>
+					<fieldset>
+						<legend>Lançamentos futuros</legend> <!-- 3* -->
+						<util:extrato height="100" lista="#{principalBean.listaFuturos}"
+							larguraDescricao="130" botaoExclusao="false" botaoEdicao="false"
+							colunaSaldo="false" />
+					</fieldset>
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
+
+
+
+<!-- 1 - Inclusão  da biblioteca da tag personalizada na pagina.
+
+2 e 3 - Essas duas listagens são alimentadas por metodos da classe PrincipalBean, getListaAteHoje() e getListaFuturos().
+
+ -->
+
+<!-- Copia da pagina inteira antes de mudar para o menu_sistema.xhtml -->
+<!-- 
+
+<ui:define name="corpo">
 	
-	Usuário logado #{request.remoteUser} <!-- Retorna o Login do Usuario em Questão -->
-	<br />
+	Usuário logado #{request.remoteUser} Retorna o Login do Usuario em Questão 
+	  </ui:define>
 	<h:form>
-		<!-- 
-		Desde 02/06/2016 a biblioteca facelets-taglib-jsf20-spring-3
-		foi removida do repositorio do GoogleCode e ainda não foi 
-		recolocada no repositorio central do Maven
-		Enquanto isto não acontecer, estamos deixando de usar a tag
-		<sec:ifAnyGranted> para usar a tag
-		<h:panelGroup rendered="...isUserInRole...">
-		conforme abaixo  
-		-->
+	
+	<h:commandButton value="Conta" action="/restrito/conta" />
+	
+		<h:selectOneMenu value="#{contextoBean.contaAtiva.conta}" 
+			valueChangeListener="#{contextoBean.changeContaAtiva}"
+			rendered="#{not empty contextoBean and not empty contextoBean.contaAtiva}"
+			onchange="submit()">
+			<f:selectItems value="#{contaBean.lista}" var="conta"
+				itemValue="#{conta.conta}" itemLabel="#{conta.descricao}" />
+		</h:selectOneMenu>
+		
 		<h:panelGroup rendered="#{request.isUserInRole('ROLE_ADMINISTRADOR')}">
 			<h:commandLink action="/admin/principal" title="Administrativo">
 				<h:graphicImage library="imagens" name="administrativo16.png" />
 			</h:commandLink>
 		</h:panelGroup>
 		
-		<!-- No codigo acima apenas usuarios adiministradores tem permissão para acessar a pagina -->
+		 No codigo acima apenas usuarios adiministradores tem permissão para acessar a pagina 
 
 		<a
 			onclick="document.location='#{request.contextPath}/j_spring_security_logout'"
@@ -34,8 +72,26 @@
 				name="logout16.png" />
 		</a>
 		
-		<!-- foi usado a tag <a> do HTML pois não tinha necessidade de JSF -->
-		<!-- #{request.contextPath} imprime o caminho-raiz do aplicativo web,mas poderia usar /financeiro/j_spring_security_logout,mas como o nome do aplicativo pode ser mudado é mais recomendavel usar o request... -->
+		foi usado a tag <a> do HTML pois não tinha necessidade de JSF 
+		 #{request.contextPath} imprime o caminho-raiz do aplicativo web,mas poderia usar /financeiro/j_spring_security_logout,mas como 
+		o nome do aplicativo pode ser mudado é mais recomendavel usar o request... 
 	</h:form>
-</h:body>
+</ui:composition>
 </html>
+
+-->
+
+<!-- 
+		<h:selectOneMenu value="#{contextoBean.contaAtiva.conta}" //sempre mostra a conta ativa do usuario.
+			valueChangeListener="#{contextoBean.changeContaAtiva}"//garante que a conta selecionada seja atribuida como a conta bancaria ativa do usuario. 
+			rendered="#{not empty contextoBean and not empty contextoBean.contaAtiva}"
+			onchange="submit()">  //este evento garante que o formulario seja enviado sempre que o usuario mudar a conta selecionada
+			<f:selectItems value="#{contaBean.lista}" var="conta"
+				itemValue="#{conta.conta}" itemLabel="#{conta.descricao}" />
+		</h:selectOneMenu>
+	
+		Este Componente foi criado por que o sismtema sempre trabalhe com uma conta ativa,pois algumas operaçoes disponiveis
+		serão feitas para uma conta bancaria especifica,entre elas podemos citar o registro de lançamentos e controle de cheques,este recurso
+		indicar a conta bancaria ativa do sistema será fornecido por meio de uma caixa de seleção no sistema,desta forma, a partir de qualquer
+		página o usuario poderá alterar a conta ativa.
+ -->

@@ -1,86 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Cadastro de Usuários</title>
-</h:head>
-<h:body>
-	<h1>Cadastro de Usuários</h1>
-	<h:form id="cadastro">
-		<h:messages /> <!-- sem esta TAG não será exibida mensagem de erro para o usuario, mesmo com erro no formulario,fazendo com que o formulario seja reexibido sem que o usuario intenda o motivo -->
-		<h:inputHidden value="#{usuarioBean.usuario.codigo}" /> <!-- mesmo não aparecendo na tela o valor do inputHidden vai alimentar o objeto Usuario,caso contrario a informação codigo e ativo se perderia a cada alteração -->
-		<h:inputHidden value="#{usuarioBean.usuario.ativo}" />
-		<h:inputHidden value="#{usuarioBean.destinoSalvar}"/>
-
-		<h:panelGrid columns="2">
-			<h:outputLabel value="Nome:" for="nome" />
-			<h:inputText id="nome" label="Nome"
-				value="#{usuarioBean.usuario.nome}" size="30" maxlength="30" 
-				required="true" requiredMessage="Você não tem nome?"> <!-- Na UEL "#{usuarioBean.usuario.nome}" internamente o java executa usuarioBean.getUsuario().getNome(). -->
-				<f:validateLength minimum="10" maximum="30" /> 
-			</h:inputText>
+<ui:composition template="/templates/interna.xhtml"> <!-- Pagina do Template, tags ui são do Facelets -->
+	<ui:define name="titulo">
+		Cadastro de Usuários
+	</ui:define>
+	<ui:define name="corpo">
+			<h:form id="cadastro">
+					<h:messages /> <!-- sem esta TAG não será exibida mensagem de erro para o usuario, mesmo com erro no formulario,fazendo com que o formulario seja reexibido sem que o usuario intenda o motivo -->
+					<h:inputHidden value="#{usuarioBean.usuario.codigo}" /> <!-- mesmo não aparecendo na tela o valor do inputHidden vai alimentar o objeto Usuario,caso contrario a informação codigo e ativo se perderia a cada alteração -->
+					<h:inputHidden value="#{usuarioBean.usuario.ativo}" />
+					<h:inputHidden value="#{usuarioBean.destinoSalvar}"/>
 			
-			<!-- o atributo required é uma validação que ja vem com mensagem de erro padrão,porém usando o atributo requiredMessage é possivel subistituir a mensagem -->
-
-			<h:outputLabel value="Data Nascimento:" for="data" />
-			<h:inputText id="data" label="Data Nascimento"
-				value="#{usuarioBean.usuario.nascimento}" size="10" maxlength="10"
-				required="true">
-				<f:convertDateTime dateStyle="medium" />
-			</h:inputText>
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Nome:" for="nome" />
+						<h:inputText id="nome" label="Nome"
+							value="#{usuarioBean.usuario.nome}" size="30" maxlength="30" 
+							required="true" requiredMessage="Você não tem nome?"> <!-- Na UEL "#{usuarioBean.usuario.nome}" internamente o java executa usuarioBean.getUsuario().getNome(). -->
+							<f:validateLength minimum="10" maximum="30" /> 
+						</h:inputText>
+						
+						<!-- o atributo required é uma validação que ja vem com mensagem de erro padrão,porém usando o atributo requiredMessage é 
+						possivel subistituir a mensagem -->
 			
-			<!-- f:convertDateTime permite que o campo inputtext aponte para uma propriedade java.util.date para expressar a data ou hora da forma como configuramos -->
-			<!-- o atributo dateStyle fala que tipo de informação deseja converter, medium por exemplo ficaria - 16/08/2015 por exemplo,short ficaria - 16/08/15  -->
+						<h:outputLabel value="Data Nascimento:" for="data" />
+						<h:inputText id="data" label="Data Nascimento"
+							value="#{usuarioBean.usuario.nascimento}" size="10" maxlength="10"
+							required="true">
+							<f:convertDateTime dateStyle="medium" />
+						</h:inputText>
+						
+						<!-- f:convertDateTime permite que o campo inputtext aponte para uma propriedade java.util.date para expressar a data ou hora da forma como configuramos -->
+						<!-- o atributo dateStyle fala que tipo de informação deseja converter, medium por exemplo ficaria - 16/08/2015 por exemplo,short ficaria - 16/08/15  -->
+						
+						<h:outputLabel value="Celular:" for="celular" />
+						<h:inputText id="celular" label="Celular"
+							value="#{usuarioBean.usuario.celular}" size="10" />
 			
-			<h:outputLabel value="Celular:" for="celular" />
-			<h:inputText id="celular" label="Celular"
-				value="#{usuarioBean.usuario.celular}" size="10" />
-
-			<h:outputLabel value="e-Mail:" for="email" />
-			<h:panelGroup>
-				<h:inputText id="email" label="e-Mail"
-					value="#{usuarioBean.usuario.email}" size="50" maxlength="50"
-					required="true" validatorMessage="e-mail inválido">
-					<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
-				</h:inputText>
-				<h:message for="email" />
-			</h:panelGroup>
-
-			<!-- f:validateRegex, come ele só será valido texto com caracteres de a a z,numero de 0 a 9,simbolos . e _ e tamanho de 5 a 15 caracteres  -->
-			<!-- h:message, somento a mensagem referente ao campo Email seja exibido nesse local -->
+						<h:outputLabel value="e-Mail:" for="email" />
+						<h:panelGroup>
+							<h:inputText id="email" label="e-Mail"
+								value="#{usuarioBean.usuario.email}" size="50" maxlength="50"
+								required="true" validatorMessage="e-mail inválido">
+								<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+							</h:inputText>
+							<h:message for="email" />
+						</h:panelGroup>
 			
-			<h:outputLabel value="Idioma:" for="idioma" />
-			<h:selectOneMenu id="idioma" value="#{usuarioBean.usuario.idioma}">
-				<f:selectItem itemValue="pt_BR" itemLabel="Português" />
-				<f:selectItem itemValue="en_US" itemLabel="English" />
-				<f:selectItem itemValue="es_ES" itemLabel="Espanol" />
-			</h:selectOneMenu>
-
-			<h:outputLabel value="Login:" for="login" />
-			<h:inputText id="login" label="Login"
-				value="#{usuarioBean.usuario.login}" size="15" maxlength="15"
-				required="true"
-				validatorMessage="Login deve ter no mínimo 5 e no máximo 15 caracteres e só pode ter os símbolos '.' e '_'.">
-				<f:validateRegex pattern="([a-z]|[0-9]|[.]|[_]){5,15}" />
-			</h:inputText>
-
-			<h:outputLabel value="Senha:" for="senha" />
-			<h:inputSecret id="senha" label="Senha"
-				value="#{usuarioBean.usuario.senha}" size="10" maxlength="10"
-				required="true" redisplay="true" />
-
-			<h:outputLabel value="Confirmar Senha:" for="confirmarsenha" />
-			<h:inputSecret id="confirmarsenha" label="Confirmar Senha"
-				value="#{usuarioBean.confirmarSenha}" size="10" maxlength="10"
-				required="true" redisplay="true" />
-		</h:panelGrid>
-
-			<!-- redisplay é um atributo que vai exibir a senha na tela -->
+						<!-- f:validateRegex, come ele só será valido texto com caracteres de a a z,numero de 0 a 9,simbolos . e _ e tamanho de 5 a 15 caracteres  -->
+						<!-- h:message, somente a mensagem referente ao campo Email seja exibido nesse local -->
+						
+						<h:outputLabel value="Idioma:" for="idioma" />
+						<h:selectOneMenu id="idioma" value="#{usuarioBean.usuario.idioma}">
+							<f:selectItem itemValue="pt_BR" itemLabel="Português" />
+							<f:selectItem itemValue="en_US" itemLabel="English" />
+							<f:selectItem itemValue="es_ES" itemLabel="Espanol" />
+						</h:selectOneMenu>
 			
+						<h:outputLabel value="Login:" for="login" />
+						<h:inputText id="login" label="Login"
+							value="#{usuarioBean.usuario.login}" size="15" maxlength="15"
+							required="true"
+							validatorMessage="Login deve ter no mínimo 5 e no máximo 15 caracteres e só pode ter os símbolos '.' e '_'.">
+							<f:validateRegex pattern="([a-z]|[0-9]|[.]|[_]){5,15}" />
+						</h:inputText>
 			
-		<h:commandButton action="#{usuarioBean.salvar}" value="Salvar" />
-	</h:form>
-</h:body>
+						<h:outputLabel value="Senha:" for="senha" />
+						<h:inputSecret id="senha" label="Senha"
+							value="#{usuarioBean.usuario.senha}" size="10" maxlength="10"
+							required="true" redisplay="true" />
+			
+						<h:outputLabel value="Confirmar Senha:" for="confirmarsenha" />
+						<h:inputSecret id="confirmarsenha" label="Confirmar Senha"
+							value="#{usuarioBean.confirmarSenha}" size="10" maxlength="10"
+							required="true" redisplay="true" />
+					</h:panelGrid>
+			
+						<!-- redisplay é um atributo que vai exibir a senha na tela -->
+						<!-- Confirmar senha só existe em tela, não no banco de dados. -->
+						
+					<h:panelGroup rendered="#{empty usuarioBean.usuario.codigo}">
+				 	   <fieldset>
+							<legend>Conta Inicial</legend>
+							<h:panelGrid columns="2">
+								<h:outputLabel value="Descrição: " for="descricao" />
+								<h:inputText id="descricao" label="Descrição"
+									value="#{usuarioBean.conta.descricao}" required="true"
+									maxlength="45" />
+			
+								<h:outputLabel value="Saldo Inicial: " for="saldoInicial" />
+								<h:inputText id="saldoInicial"
+									value="#{usuarioBean.conta.saldoInicial}" size="10">
+									<f:convertNumber minFractionDigits="2" />
+								</h:inputText>
+							</h:panelGrid>
+						</fieldset>
+					</h:panelGroup>
+					
+				<!-- Como esse formulario será utilizado tanto para inclusão quanto para alteraçao de usuario,a parte de conta inicial não poderia estar 
+				disponivel no momento da alteração de usuario,por esse motivo,só mostramos esse trecho quando o cadastro está sendo utilizado por
+				um usuario ainda não cadastrado,ou seja quando não existe usuario logado (empty usuarioBean.usuario.codigo).
+				 -->
+					
+				<h:commandButton action="#{usuarioBean.salvar}" value="Salvar" />
+			</h:form>
+		</ui:define>
+  </ui:composition>
 </html>
