@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.47</version>
+			<version>8.0.16</version>
 			<scope>provided</scope>
 			<!-- <scope>provided</scope> quer dizer que o maven nao vai ter uma copia desta dependencia, ela vai ser fornecida -->
 			<!--de outra forma, neste caso o jar esta na pasta lib do tomcat. -->
