@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.3.4.Final</version>
+			<version>5.3.20.Final</version>
 		</dependency>
 		<!-- MySQL -->
 		<!-- Diferente do Livro eu tive que mudar para 5.1.47 -->
